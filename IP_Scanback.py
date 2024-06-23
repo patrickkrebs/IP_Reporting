@@ -29,6 +29,12 @@ def get_reverse_dns(ip):
     except Exception as e:
         return str(e)
 
+# Function to read IP addresses from a file
+def read_ip_list(filename):
+    with open(filename, 'r') as file:
+        ip_list = file.read().splitlines()
+    return ip_list
+
 # Main function to gather all information
 def get_ip_info(ip_list):
     ip_info_list = []
@@ -43,8 +49,8 @@ def get_ip_info(ip_list):
 
     return ip_info_list
 
-# List of IP addresses to lookup
-ip_addresses = ['8.8.8.8', '8.8.4.4']  # Replace with your list of IP addresses
+# Read IP addresses from ip_list.dat
+ip_addresses = read_ip_list('ip_list.dat')
 
 # Get information for each IP address
 ip_information = get_ip_info(ip_addresses)

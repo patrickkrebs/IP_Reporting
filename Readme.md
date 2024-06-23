@@ -1,7 +1,7 @@
 ## Premise:
-<code>
+
 This Python project is for scanning malicious IP addresses. My home network was getting scanned regularly by the same IP addresses. My router blocked the scans, but I got annoyed. I wanted to know everything about the IP Addresses scanning me so this was born.
-</code>
+
 
 Place your GeoLocation API Key in the local_config.py file provided:
 
@@ -30,7 +30,7 @@ Here are a few popular ones along with instructions on how to get an API key:
 	3.	Purchase a subscription for the GeoIP2 services (they offer a free trial for limited usage).
 	4.	Once subscribed, you will receive an API key.
 
-### [Website](https://www.ipstack.com/)
+### [Website: IPStack](https://www.ipstack.com/)
 
     How to get the API key:
 
