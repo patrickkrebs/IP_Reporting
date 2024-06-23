@@ -1,7 +1,9 @@
 This Python project is for scanning malicious IP addresses. My home network was getting scanned regularly by the same IP addresses. My router blocked the scans, but I got annoyed. I wanted to know everything about the IP Addresses scanning me so this was born.
 
-    #requirements.txt
-    #pip install -r requirements.txt
+### _Inputs_ 
+
+    # requirements.txt
+    # [pip install -r requirements.txt]
 
     requests==2.31.0
     ipwhois==1.2.0
