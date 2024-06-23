@@ -34,8 +34,7 @@ def parse_markdown(file_path):
                         contacts.append(current_contact)
                     current_contact = {'Contact Name': line.split(': ')[1]}
                 if '  - **Contact Address**' in line:
-                    address = line.split(': ')[1].replace("\\n", "\n").split("\n")
-                    current_contact['Contact Address'] = ', '.join([part for part in address if part and part != 'N/A'])
+                    current_contact['Contact Address'] = line.split(': ')[1]
                 if '  - **Contact Phone**' in line:
                     current_contact['Contact Phone'] = line.split(': ')[1]
                 if '  - **Abuse Email**' in line:
@@ -75,6 +74,11 @@ def parse_markdown(file_path):
 
     return ip_info_list
 
+def format_address(address):
+    address_lines = address.split("\\n")
+    filtered_address = ' '.join([part.strip().rstrip('.') for part in address_lines if part.strip() and part.strip() != 'N/A'])
+    return filtered_address + '.'
+
 def generate_letter(ip_info, user_name, user_email):
     today_date = datetime.now().strftime("%B %d, %Y")
     letters = []
@@ -95,9 +99,7 @@ According to the information gathered, this IP address has an abuse confidence s
 The following contacts are associated with this IP address:
 """
         for contact in info['Contacts']:
-            # Ensure full address is formatted correctly
-            address_parts = contact.get('Contact Address', 'N/A').split("\n")
-            contact_address = ', '.join([part for part in address_parts if part and part != 'N/A'])
+            contact_address = format_address(contact.get('Contact Address', 'N/A'))
             letter += f"""
 - **Name**: {contact.get('Contact Name', 'N/A')}
   **Address**: {contact_address}
@@ -106,7 +108,7 @@ The following contacts are associated with this IP address:
 """
 
         letter += f"""
-I kindly demand that immediate action be taken to identify and remove the user associated with this IP address, and to implement measures to restrict and monitor this IP address to prevent further malicious activities. Continued attacks will be logged and filed, and will serve as evidence in a class action suit should this behavior persist.
+I kindly demand that immediate action be taken to identify and remove the user associated with this IP address, and to implement measures to restrict and monitor this IP address to prevent further malicious activities. Continued attacks will be logged and filed, and will serve as evidence in legal action should this behavior persist.
 
 Please confirm receipt of this letter and inform me of the steps you will take to address this issue. I expect a prompt response outlining the actions you will implement to resolve this matter.
 
