@@ -1,6 +1,6 @@
 This Python project is for scanning malicious IP addresses. My home network was getting scanned regularly by the same IP addresses. My router blocked the scans, but I got annoyed. I wanted to know everything about the IP Addresses scanning me so this was born.
 
-### _Inputs_ 
+## _Inputs_ 
 
     # requirements.txt
     # [pip install -r requirements.txt]
@@ -8,6 +8,15 @@ This Python project is for scanning malicious IP addresses. My home network was 
     requests==2.31.0
     ipwhois==1.2.0
     dnspython==2.3.0
+
+Place the IP addresses you'd like to scan in the ip_list.dat file:
+
+    # ip_list.dat
+    # Each line should contain a single full IP address
+
+    xxx.xxx.xxx.xxx
+    xx.xx.xx.xx
+    xxx.xxx.xxx.xxx
 
 Place your GeoLocation API Key in the local_config.py file provided:
 
@@ -18,7 +27,7 @@ Place your GeoLocation API Key in the local_config.py file provided:
 You can obtain an API key for geolocation services from various providers. 
 Here are a few popular ones along with instructions on how to get an API key:
 
-### [Website: ipgeolocation.io](https://www.ipgeolocation.io/)<br>
+#### [Website: ipgeolocation.io](https://www.ipgeolocation.io/)
 
     How to get the API key:
 
@@ -27,7 +36,7 @@ Here are a few popular ones along with instructions on how to get an API key:
 	3.	Once logged in, navigate to the dashboard.
 	4.	You will find your API key in the dashboard.
 
-### [Website: MaxMind GeoIP2](https://www.maxmind.com)
+#### [Website: MaxMind GeoIP2](https://www.maxmind.com)
 
     How to get the API key:
 
@@ -36,7 +45,7 @@ Here are a few popular ones along with instructions on how to get an API key:
 	3.	Purchase a subscription for the GeoIP2 services (they offer a free trial for limited usage).
 	4.	Once subscribed, you will receive an API key.
 
-### [Website: IPStack](https://www.ipstack.com/)
+#### [Website: IPStack](https://www.ipstack.com/)
 
     How to get the API key:
 
@@ -45,7 +54,7 @@ Here are a few popular ones along with instructions on how to get an API key:
 	3.	Once logged in, go to the API Access section in your dashboard.
 	4.	You will find your API key there.
 
-### [Website: IPinfo](https://www.ipinfo.io/)
+#### [Website: IPinfo](https://www.ipinfo.io/)
 
     How to get the API key:
 
@@ -53,3 +62,14 @@ Here are a few popular ones along with instructions on how to get an API key:
 	2.	Sign up for a free account.
 	3.	Once logged in, navigate to the API Access section in your dashboard.
 	4.	You will find your API key there.
+
+## _Outputs_
+The script will create two files in an output directory adjecent to the ip_scanback.py script.
+
+    # output/discovery.md
+    File containing all of the pulled data about the IP addresses. 
+    Generated in simple to read Markdown language
+    
+    # output/discovery.JSON
+    File containing all of the pulled data about the IP addresses.
+    Generated in JSON for the more code friendly users.

@@ -3,6 +3,7 @@ from ipwhois import IPWhois
 import socket
 import json
 import logging
+import os
 import local_config  # Import the local_config module
 
 # Configure logging
@@ -56,7 +57,7 @@ def read_ip_list(filename):
         return []
 
 # Function to write findings to a markdown file
-def write_to_markdown(ip_info_list, filename='discovery.md'):
+def write_to_markdown(ip_info_list, filename='output/discovery.md'):
     logging.debug(f"Writing findings to {filename}")
     try:
         with open(filename, 'w') as file:
@@ -74,7 +75,7 @@ def write_to_markdown(ip_info_list, filename='discovery.md'):
         logging.error(f"Failed to write findings to {filename}: {e}")
 
 # Function to write findings to a JSON file
-def write_to_json(ip_info_list, filename='discovery.json'):
+def write_to_json(ip_info_list, filename='output/discovery.json'):
     logging.debug(f"Writing findings to {filename}")
     try:
         with open(filename, 'w') as file:
@@ -100,6 +101,12 @@ def get_ip_info(ip_list):
 
     logging.debug(f"Completed information gathering for all IPs")
     return ip_info_list
+
+# Ensure the output directory exists
+output_dir = 'output'
+if not os.path.exists(output_dir):
+    logging.debug(f"Creating directory {output_dir}")
+    os.makedirs(output_dir)
 
 # Read IP addresses from ip_list.dat
 ip_addresses = read_ip_list('ip_list.dat')
