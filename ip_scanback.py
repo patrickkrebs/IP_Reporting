@@ -55,6 +55,34 @@ def read_ip_list(filename):
         logging.error(f"Failed to read IP addresses from {filename}: {e}")
         return []
 
+# Function to write findings to a markdown file
+def write_to_markdown(ip_info_list, filename='discovery.md'):
+    logging.debug(f"Writing findings to {filename}")
+    try:
+        with open(filename, 'w') as file:
+            for info in ip_info_list:
+                file.write(f"## IP Address: {info['IP']}\n")
+                file.write(f"### Whois Information\n")
+                file.write(f"```\n{json.dumps(info['Whois'], indent=4)}\n```\n")
+                file.write(f"### Geolocation Information\n")
+                file.write(f"```\n{json.dumps(info['Geolocation'], indent=4)}\n```\n")
+                file.write(f"### Reverse DNS Information\n")
+                file.write(f"```\n{info['Reverse DNS']}\n```\n")
+                file.write("\n")
+        logging.debug(f"Successfully wrote findings to {filename}")
+    except Exception as e:
+        logging.error(f"Failed to write findings to {filename}: {e}")
+
+# Function to write findings to a JSON file
+def write_to_json(ip_info_list, filename='discovery.json'):
+    logging.debug(f"Writing findings to {filename}")
+    try:
+        with open(filename, 'w') as file:
+            json.dump(ip_info_list, file, indent=4)
+        logging.debug(f"Successfully wrote findings to {filename}")
+    except Exception as e:
+        logging.error(f"Failed to write findings to {filename}: {e}")
+
 # Main function to gather all information
 def get_ip_info(ip_list):
     logging.debug(f"Starting information gathering for IP list")
@@ -79,5 +107,11 @@ ip_addresses = read_ip_list('ip_list.dat')
 # Get information for each IP address
 ip_information = get_ip_info(ip_addresses)
 
-# Print the information
-print(json.dumps(ip_information, indent=4))
+# Write the information to a markdown file
+write_to_markdown(ip_information)
+
+# Write the information to a JSON file
+write_to_json(ip_information)
+
+# Optionally, print the information
+# print(json.dumps(ip_information, indent=4))
