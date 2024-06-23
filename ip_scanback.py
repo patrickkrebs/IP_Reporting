@@ -21,16 +21,28 @@ def get_whois_info(ip):
         logging.error(f"Whois lookup failed for {ip}: {e}")
         return str(e)
 
-# Function to get Geolocation information
+# Function to get Geolocation information from ipgeolocation.io
 def get_geolocation_info(ip):
-    logging.debug(f"Performing Geolocation lookup for {ip}")
+    logging.debug(f"Performing Geolocation lookup for {ip} with ipgeolocation.io")
     try:
         response = requests.get(f"https://ipgeolocation.io/ip-location/{ip}?key={local_config.IP_GEOLOCATION_API_KEY}")
         geolocation_info = response.json()
-        logging.debug(f"Geolocation lookup successful for {ip}")
+        logging.debug(f"Geolocation lookup successful for {ip} with ipgeolocation.io")
         return geolocation_info
     except Exception as e:
-        logging.error(f"Geolocation lookup failed for {ip}: {e}")
+        logging.error(f"Geolocation lookup failed for {ip} with ipgeolocation.io: {e}")
+        return str(e)
+
+# Function to get Geolocation information from IPInfo
+def get_ipinfo_geolocation(ip):
+    logging.debug(f"Performing Geolocation lookup for {ip} with IPInfo")
+    try:
+        response = requests.get(f"https://ipinfo.io/{ip}/json?token={local_config.IPINFO_API_KEY}")
+        geolocation_info = response.json()
+        logging.debug(f"Geolocation lookup successful for {ip} with IPInfo")
+        return geolocation_info
+    except Exception as e:
+        logging.error(f"Geolocation lookup failed for {ip} with IPInfo: {e}")
         return str(e)
 
 # Function to get Reverse DNS information
@@ -42,6 +54,22 @@ def get_reverse_dns(ip):
         return reverse_dns
     except Exception as e:
         logging.error(f"Reverse DNS lookup failed for {ip}: {e}")
+        return str(e)
+
+# Function to get reputation information from AbuseIPDB
+def get_abuseipdb_reputation(ip):
+    logging.debug(f"Checking IP reputation for {ip} with AbuseIPDB")
+    headers = {
+        'Key': local_config.ABUSEIPDB_API_KEY,
+        'Accept': 'application/json'
+    }
+    try:
+        response = requests.get(f"https://api.abuseipdb.com/api/v2/check?ipAddress={ip}", headers=headers)
+        reputation_info = response.json()
+        logging.debug(f"Reputation check successful for {ip} with AbuseIPDB")
+        return reputation_info
+    except Exception as e:
+        logging.error(f"Reputation check failed for {ip} with AbuseIPDB: {e}")
         return str(e)
 
 # Function to read IP addresses from a file
@@ -65,10 +93,14 @@ def write_to_markdown(ip_info_list, filename='output/discovery.md'):
                 file.write(f"## IP Address: {info['IP']}\n")
                 file.write(f"### Whois Information\n")
                 file.write(f"```\n{json.dumps(info['Whois'], indent=4)}\n```\n")
-                file.write(f"### Geolocation Information\n")
+                file.write(f"### Geolocation Information (ipgeolocation.io)\n")
                 file.write(f"```\n{json.dumps(info['Geolocation'], indent=4)}\n```\n")
+                file.write(f"### Geolocation Information (IPInfo)\n")
+                file.write(f"```\n{json.dumps(info['IPInfoGeolocation'], indent=4)}\n```\n")
                 file.write(f"### Reverse DNS Information\n")
                 file.write(f"```\n{info['Reverse DNS']}\n```\n")
+                file.write(f"### Reputation Information (AbuseIPDB)\n")
+                file.write(f"```\n{json.dumps(info['Reputation'], indent=4)}\n```\n")
                 file.write("\n")
         logging.debug(f"Successfully wrote findings to {filename}")
     except Exception as e:
@@ -95,7 +127,9 @@ def get_ip_info(ip_list):
         info['IP'] = ip
         info['Whois'] = get_whois_info(ip)
         info['Geolocation'] = get_geolocation_info(ip)
+        info['IPInfoGeolocation'] = get_ipinfo_geolocation(ip)
         info['Reverse DNS'] = get_reverse_dns(ip)
+        info['Reputation'] = get_abuseipdb_reputation(ip)
         ip_info_list.append(info)
         logging.debug(f"Finished gathering information for {ip}")
 
