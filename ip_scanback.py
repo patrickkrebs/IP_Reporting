@@ -2,6 +2,7 @@ import requests
 from ipwhois import IPWhois
 import socket
 import json
+import local_config  # Import the local_config module
 
 # Function to get Whois information
 def get_whois_info(ip):
@@ -15,7 +16,7 @@ def get_whois_info(ip):
 # Function to get Geolocation information
 def get_geolocation_info(ip):
     try:
-        response = requests.get(f"https://ipgeolocation.io/ip-location/{ip}?key=YOUR_API_KEY")
+        response = requests.get(f"https://ipgeolocation.io/ip-location/{ip}?key={local_config.IP_GEOLOCATION_API_KEY}")
         geolocation_info = response.json()
         return geolocation_info
     except Exception as e:
